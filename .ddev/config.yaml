@@ -13,6 +13,18 @@ use_dns_when_possible: true
 composer_version: "2"
 web_environment: []
 
+hooks:
+  pre-stop:
+    - exec-host: "ddev snapshot --cleanup -y"
+    - exec-host: "ddev snapshot"
+    # create date version of db
+    - exec-host: "ddev export-db -f backup/$(date +%Y%m%d%H%M%S)-redstone.sql.gz"
+    # create latest version of db so it can be imported
+    - exec-host: "ddev export-db -f backup/latest-redstone.sql.gz"
+
+  post-start:
+    - exec-host: "ddev import-db --file=backup/latest-redstone.sql.gz"
+
 # Key features of DDEV's config.yaml:
 
 # name: <projectname> # Name of the project, automatically provides
