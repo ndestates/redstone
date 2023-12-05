@@ -29,6 +29,7 @@ class Venue extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'region' => Region::class,
     ];
 
     public function conferences(): HasMany

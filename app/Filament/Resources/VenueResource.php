@@ -35,6 +35,9 @@ class VenueResource extends Resource
                 Forms\Components\TextInput::make('postal_code')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('region')
+                    ->enum (Region::class )
+                    ->options (Region::class),
             ]);
     }
 
