@@ -10,7 +10,7 @@ class Speaker extends Model
 {
     use HasFactory;
 
-   protected $casts = [
+    protected $casts = [
         'id' => 'integer',
     ];
 
