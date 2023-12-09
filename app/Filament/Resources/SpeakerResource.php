@@ -22,7 +22,7 @@ class SpeakerResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(speaker:getForm());
+            ->schema(Speaker::getForm());
     }
 
     public static function table(Table $table): Table

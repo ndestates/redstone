@@ -61,7 +61,7 @@ class Speaker extends Model
                     'business-leader' => 'Here is a nice long description',
                     'charisma' => 'This is even more information about why you should pick this one',
                 ])
-                ->columns(3)
+                ->columns(3),
         ];
     }
 

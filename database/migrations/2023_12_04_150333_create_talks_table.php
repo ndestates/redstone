@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('abstract');
-            $table->foreignId('speaker_id');
+            $table->unsignedInteger('speaker_id');
             $table->timestamps();
         });
     }
