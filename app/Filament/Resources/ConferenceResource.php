@@ -35,7 +35,7 @@ class ConferenceResource extends Resource
                 Forms\Components\MarkdownEditor::make('description')
                     ->helperText('Hello')
                     ->required(),
-                Forms\Components\DatePicker::make('start_date')
+                Forms\Components\DateTimePicker::make('start_date')
                     ->native(false)
                     ->required(),
                 Forms\Components\DateTimePicker::make('end_date')
