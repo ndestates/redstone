@@ -64,5 +64,4 @@ class Speaker extends Model
                 ->columns(3),
         ];
     }
-
 }
