@@ -6,6 +6,7 @@ use App\Enums\Region;
 use App\Filament\Resources\ConferenceResource\Pages;
 use App\Filament\Resources\ConferenceResource\RelationManagers;
 use App\Models\Conference;
+use App\Models\Speaker;
 use App\Models\Venue;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -34,7 +35,7 @@ class ConferenceResource extends Resource
                 Forms\Components\MarkdownEditor::make('description')
                     ->helperText('Hello')
                     ->required(),
-                Forms\Components\DatePicker::make('start_date')
+                Forms\Components\DateTimePicker::make('start_date')
                     ->native(false)
                     ->required(),
                 Forms\Components\DateTimePicker::make('end_date')
