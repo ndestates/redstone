@@ -41,23 +41,57 @@ class TalkResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->persistFiltersInSession()
+            ->filtersTriggerAction(function ($action) {
+                return $action->button()->label('Filters');
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->sortable()
+                    ->searchable()
+                    ->description(function (Talk $record) {
+                        return Str::limit($record->abstract, 40);
+                    }),
+                Tables\Columns\ImageColumn::make('speaker.avatar')
+                    ->label('Speaker Avatar')
+                    ->circular()
+                    ->defaultImageUrl(function ($record) {
+                        return 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=' . urlencode($record->speaker->name);
+                    }),
                 Tables\Columns\TextColumn::make('speaker.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('new_talk'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->color(function ($state) {
+                        return $state->getColor();
+                    }),
+                Tables\Columns\IconColumn::make('length')
+                    ->icon(function ($state) {
+                        return match ($state) {
+                            TalkLength::NORMAL => 'heroicon-o-megaphone',
+                            TalkLength::LIGHTNING => 'heroicon-o-bolt',
+                            TalkLength::KEYNOTE => 'heroicon-o-key',
+                        };
+                    })
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('new_talk'),
+                Tables\Filters\SelectFilter::make('speaker')
+                    ->relationship('speaker', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\Filter::make('has_avatar')
+                    ->label('Show Only Speakers With Avatars')
+                    ->toggle()
+                ->query(function ($query) {
+                    return $query->whereHas('speaker', function (Builder $query) {
+                        $query->whereNotNull('avatar');
+                    });
+                })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
